@@ -259,7 +259,7 @@ class FacebookBot(webdriver.PhantomJS):
         comments = []
         for n in range(deep):
             print("Searching, deep ",n)
-            c = self.find_elements_by_class_name('cu')
+            c = self.find_elements_by_class_name('cu')# only extracts a few comments, you can try to go through a list like ["cu","cy","db"...]. Currently testing another method using xPath
             for comment in c :
                 comments.append(comment.text)
             try:
