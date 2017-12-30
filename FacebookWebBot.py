@@ -251,7 +251,26 @@ class FacebookBot(webdriver.PhantomJS):
                 print(e)
                 print(" Can't get more posts")
         return posts
+    def getCommentsInPost(self, url, deep=10, moreText="Commentaires précédents…"):
+        """Get a list of comments (list:Post) in post url(str) iterating deep(int) times in the group
+        pass moreText depending of your language, i couldn't find a elegant solution for this"""
 
+        self.get(url)    
+        comments = []
+        for n in range(deep):
+            print("Searching, deep ",n)
+            c = self.find_elements_by_class_name('cu')
+            for comment in c :
+                comments.append(comment.text)
+            try:
+                more = self.find_element_by_partial_link_text(
+                    moreText).get_attribute('href')
+                self.get(more)
+            
+            except Exception as e:
+                print(e)
+                print(" Can't get more posts")                
+        return comments
     def postInGroup(self, groupURL, text):
         """Post text(str) in a group"""
 
@@ -287,7 +306,7 @@ class FacebookBot(webdriver.PhantomJS):
         vp.click()
         return True
 
-    def commentInPost(self, postUrl, text):
+    def getCommentInPost(self, postUrl, text):
         """Comment a text(str) in a post(str)"""
         try:
             self.get(postUrl)
